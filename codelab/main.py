@@ -47,3 +47,10 @@ for student_name in special_char_students["Student Name"]:
 
 # Save to CSV
 special_char_students.to_csv("output/special_char_students.csv", index=False)
+
+# One-time shuffle
+shuffled_df = df.sample(frac=1)
+
+# Output shuffled data to JSON and JSONL
+shuffled_df.to_json("output/shuffled_students.json", orient="records")
+shuffled_df.to_json("output/shuffled_students.jsonl", orient="records", lines=True)
