@@ -1,9 +1,6 @@
 import re
 import pandas as pd
 
-import re
-import pandas as pd
-
 
 def combine_dataframes(df1, df2):
     """
@@ -14,6 +11,7 @@ def combine_dataframes(df1, df2):
     """
     combined_df = pd.concat([df1, df2], ignore_index=True)
     return combined_df
+
 
 def generate_email(name):
     """
@@ -50,6 +48,7 @@ def make_unique(emails):
 
     return unique_emails
 
+
 def get_students_by_gender(df, gender):
     """
     Get all students of a specified gender.
@@ -60,5 +59,3 @@ def get_students_by_gender(df, gender):
     for index, row in df.iterrows():
         if row['Gender'] == gender:
             yield row
-
-

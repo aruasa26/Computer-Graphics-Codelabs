@@ -1,9 +1,3 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
 import pandas as pd
 from functions import generate_email, make_unique, combine_dataframes, get_students_by_gender
 import logging
