@@ -1,0 +1,55 @@
+# This is a sample Python script.
+
+# Press Shift+F10 to execute it or replace it with your code.
+# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+
+
+import pandas as pd
+from functions import generate_email, make_unique, combine_dataframes, get_students_by_gender
+import logging
+
+# Logging configuration
+logging.basicConfig(
+    filename='computations.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+)
+
+# Excel sheets
+df1 = pd.read_excel("File_A.xlsx")
+df2 = pd.read_excel("File_B.xlsx")
+df = combine_dataframes(df1, df2)
+
+# Generating unique student emails
+df["Email Address"] = df["Student Name"].apply(generate_email)
+df["Email Address"] = make_unique(df["Email Address"])
+
+# Logging generated emails
+logging.info("----- Generated Email Addresses -----")
+for index, row in df.iterrows():
+    logging.info(f"Student Email {index + 1}: {row['Email Address']}")
+
+# Combined DataFrame saved as CSV and TSV
+df.to_csv("output/students.csv", index=False)
+df.to_csv("output/students.tsv", sep='\t', index=False)
+
+# Male students
+male_df = pd.DataFrame(get_students_by_gender(df, "M"))
+male_df.to_csv("output/male_students.csv", index=False)
+logging.info(f"No of male students: {len(male_df)}")
+
+# Female students
+female_df = pd.DataFrame(get_students_by_gender(df, "F"))
+female_df.to_csv("output/female_students.csv", index=False)
+logging.info(f"No of female students: {len(female_df)}")
+
+# Students with special characters
+pattern = r"[^\w\s,]"
+special_char_students = df[df["Student Name"].str.contains(pattern, regex=True)]
+
+logging.info(f"Students with special characters in their names: {len(special_char_students)}")
+for student_name in special_char_students["Student Name"]:
+    logging.info(f" - {student_name}")
+
+# Save to CSV
+special_char_students.to_csv("output/special_char_students.csv", index=False)
