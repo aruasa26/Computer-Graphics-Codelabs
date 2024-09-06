@@ -59,3 +59,38 @@ def get_students_by_gender(df, gender):
     for index, row in df.iterrows():
         if row['Gender'] == gender:
             yield row
+
+def build_jsonl(shuffled_df, special_char_names):
+    """
+    Build data of shuffled students from the shuffled dataframe for jsonl
+    conversion
+    :param shuffled_df: The shuffled dataframe
+    :param special_char_names: the list of names with special characters
+    :return: A list of dictionaries containing shuffled student information
+    """
+    shuffled_students = []
+    id_count = 0
+
+    for index, row in shuffled_df.iterrows():
+        student_name = row["Student Name"]
+        if student_name in special_char_names:
+            has_special_character = "['yes']"
+        else:
+            has_special_character = "['no']"
+
+        student_details = {
+            "id": id_count,
+            "student_number": row["Student Number"],
+            "additional_details": [
+                {
+                    "dob": row["DoB"].strftime("%Y-%m-%d"),
+                    "gender": row["Gender"],
+                    "special_character": has_special_character,
+                }
+            ]
+        }
+
+        shuffled_students.append(student_details)
+        id_count += 1
+
+    return shuffled_students
